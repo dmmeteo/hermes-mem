@@ -1,0 +1,8 @@
+name: hermes-mem
+version: 0.2.0
+description: Hybrid keyword + multilingual semantic recall over meaningful past conversation episodes, plus editable curated statements. Explicit tools only; no auto-recall.
+author: hermes-mem contributors
+kind: standalone
+provides_tools: [mem_search, mem_curated, mem_curate]
+provides_hooks: [post_llm_call, on_session_end]
+python_dependencies: [pyyaml]  # host-provided; the embedding engine has its own locked runtime (engine/requirements.lock)

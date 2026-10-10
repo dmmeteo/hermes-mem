@@ -1,0 +1,8 @@
+# Architecture decisions
+
+- [0001 Durable excerpt store beside state.db](0001-durable-excerpt-store.md): why selected text is copied into a plugin-owned SQLite file instead of indexing pointers into `state.db`, and why hybrid keyword matching stays strict.
+- [0002 Message identity without message_uid](0002-message-identity-fallback.md): the `(role, timestamp)` fallback for this host schema, how clones and in-place edits are handled, and its limits.
+- [0003 Processing policy: raw by default](0003-processing-policy.md): the `processing` config section, why only `none` is accepted today, and where future retain/extraction, compression or expiry would connect.
+- [0004 External embedding engine and embedding spaces](0004-external-engine-and-embedding-spaces.md): why numpy/ONNX/fastembed run in a plugin-owned locked venv and worker process instead of Hermes, how `setup` stays idempotent and failure-safe, and how embedding spaces keep vectors of different models and preprocessing apart.
+- [0005 Curated records in mem.db](0005-curated-records-in-sqlite.md): why curated records moved from Markdown files into one immutable, transactional SQLite record shape with an append-only event log, how the previous Markdown is imported (previewed, all or nothing, repeatable) and exported, and the upgrade and rollback steps.
+- [0006 BGE-M3 INT8 as the default embedding profile, with a shared model cache](0006-bge-m3-default-and-shared-model-cache.md): the comparison evidence and its limits, the pinned third-party ONNX export, MiniLM as an explicit control, lazy re-embedding into an isolated space, and weights shared across profiles.

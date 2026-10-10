@@ -1,0 +1,67 @@
+{
+  "provenance": "Hand-written synthetic personal-assistant exchanges for the hermes-mem MVP smoke eval (2026-10-10). No real user data. Expected answers are the session ids the episodes were written into, assigned before any retrieval ran.",
+  "sessions": {
+    "s_dragonfly": [["Чому ми вирішили взяти Dragonfly замість Redis?", "Через багатопотоковість і менше споживання пам'яті; AOF-персистентність нам не потрібна."]],
+    "s_backup": [["Set up nightly restic backups of the photo library to the NAS", "Done: restic runs at 02:00 every night and keeps 30 daily snapshots on the NAS."]],
+    "s_diet": [["Я не їм м'ясо з минулого року, враховуй це в рецептах", "Добре, надалі пропонуватиму лише вегетаріанські страви."]],
+    "s_vpn": [["Use WireGuard instead of OpenVPN on the GL.iNet travel router", "Configured: WireGuard tunnel home, OpenVPN profile removed."]],
+    "s_kid": [["Донька ходить на плавання по вівторках і четвергах о 17:00", "Записав: басейн у вівторок і четвер о 17:00."]],
+    "s_editor": [["I switched from VS Code to Neovim with the LazyVim distribution", "Noted, I'll give editor tips for Neovim/LazyVim from now on."]],
+    "s_tax": [["Декларацію ФОП за третій квартал треба подати до 9 листопада", "Нагадаю тобі про декларацію за тиждень до 9 листопада."]],
+    "s_coffee": [["My grinder setting for the Ethiopian Yirgacheffe espresso is 12", "Saved: Yirgacheffe espresso at grind 12."]],
+    "s_car": [["Шини на зимові міняємо, коли температура стабільно нижче семи градусів", "Домовились: заміна гуми, щойно стабільно нижче +7°C."]],
+    "s_db": [["We chose SQLite over Postgres for the memory plugin so nothing extra runs as a server", "Right: one embedded file beside state.db, no daemon to operate."]],
+    "s_flight": [["Мій рейс до Лісабона 14 листопада о 6:40 з Кракова", "Записав рейс Краків → Лісабон, 14.11 о 06:40."]],
+    "s_allergy": [["My son is allergic to peanuts", "Understood, I'll flag peanuts in any recipe or snack suggestion."]],
+    "s_weather": [["What's the weather tomorrow in Kraków?", "Cloudy, around 9°C, light rain in the evening."]],
+    "s_joke": [["Розкажи анекдот про програмістів", "Програміст ставить на тумбочку дві склянки: одну з водою, якщо захоче пити, іншу порожню — якщо не захоче."]],
+    "s_python": [["How do I flatten a list of lists in Python?", "Use a comprehension: [x for sub in rows for x in sub], or itertools.chain.from_iterable."]]
+  },
+  "queries": [
+    {"id": "q01", "lang": "en->uk", "query": "which key-value cache did we pick and what was the reasoning", "expect": "s_dragonfly"},
+    {"id": "q02", "lang": "uk->en", "query": "як у нас налаштовані резервні копії фотографій?", "expect": "s_backup"},
+    {"id": "q03", "lang": "en->uk", "query": "does the user eat meat?", "expect": "s_diet"},
+    {"id": "q04", "lang": "uk->en", "query": "який протокол тунелю стоїть на дорожньому роутері?", "expect": "s_vpn"},
+    {"id": "q05", "lang": "en->uk", "query": "when is my daughter's swimming practice?", "expect": "s_kid"},
+    {"id": "q06", "lang": "uk->en", "query": "яким текстовим редактором я тепер користуюсь?", "expect": "s_editor"},
+    {"id": "q07", "lang": "en->uk", "query": "deadline for the sole proprietor tax filing", "expect": "s_tax"},
+    {"id": "q08", "lang": "uk->en", "query": "на якому помолі я варю ефіопську каву?", "expect": "s_coffee"},
+    {"id": "q09", "lang": "en->uk", "query": "when should we switch to winter tyres?", "expect": "s_car"},
+    {"id": "q10", "lang": "uk->en", "query": "чому для плагіна пам'яті обрали вбудовану базу без сервера?", "expect": "s_db"},
+    {"id": "q11", "lang": "en->uk", "query": "what time does my flight to Lisbon depart?", "expect": "s_flight"},
+    {"id": "q12", "lang": "uk->en", "query": "на що в сина алергія?", "expect": "s_allergy"},
+    {"id": "q13", "lang": "en->en", "query": "restic snapshots", "expect": "s_backup"},
+    {"id": "q14", "lang": "uk->uk", "query": "Dragonfly", "expect": "s_dragonfly"}
+  ],
+  "follow_ups": [
+    {"id": "f01", "conversation": "User: які в нас бекапи фото?\nAssistant: restic щоночі на NAS.", "query": "а о котрій годині вони запускаються?", "expect": "s_backup"},
+    {"id": "f02", "conversation": "User: remind me about the cache decision\nAssistant: we went with Dragonfly.", "query": "why did we choose that?", "expect": "s_dragonfly"}
+  ],
+  "pricing": {
+    "provenance": "Hand-written synthetic pricing-policy exchanges in Ukrainian, English, Latin-transliterated Ukrainian and Cyrillic-transliterated English, plus lexically close unrelated distractors (2026-10-10). No real user or client data. Expected session ids and the frozen query variants were written before any retrieval with these items ran; variants follow the default mem_search guidance (other-language equivalent plus a transliteration).",
+    "sessions": {
+      "p_pricing_uk": [["Нова тарифна політика: базовий план 9 євро на місяць, за річну оплату знижка 20%, студентам безкоштовно", "Записав тарифи: базовий план €9/міс, −20% при оплаті за рік, для студентів безкоштовно."]],
+      "p_refund_en": [["Our refund policy: a full refund within 14 days, but no refund after a plan downgrade", "Noted: full refund within 14 days of purchase; no refund once a plan has been downgraded."]],
+      "p_team_translit": [["Taryfy dlia biznesu: komandnyi plan 49 ievro na misiats, do 10 korystuvachiv", "Zapysav: komandnyi plan €49/mis, do 10 korystuvachiv, dali za domovlenistiu."]],
+      "p_enterprise_cyr": [["Ентерпрайз прайсинг: кастомний контракт від 500 доларів на місяць, з SLA і окремим сапортом", "Зафіксував ентерпрайз-прайсинг: від $500/міс, кастомний контракт, SLA та виділений сапорт."]],
+      "d_grocery": [["Ціни на продукти в Біедронці знову виросли", "Так, молоко й хліб подорожчали приблизно на 10%."]],
+      "d_power_tariff": [["Тариф на електроенергію для квартири з жовтня 4,32 грн за кВт·год", "Записав новий тариф на світло: 4,32 грн/кВт·год з 1 жовтня."]],
+      "d_student_trip": [["Plan the student trip to Lviv for 10 people in March", "Draft: train on 14 March, hostel near Rynok Square, 3 nights."]],
+      "d_shoe_discount": [["Is the 20% discount on running shoes still valid?", "Yes, the 20% running-shoe discount runs until Sunday."]]
+    },
+    "queries": [
+      {"id": "pq01", "lang": "en->uk", "query": "what did we decide about subscription pricing and the student discount", "expect": "p_pricing_uk", "variants": ["тарифна політика підписки і знижка для студентів", "taryfna polityka dlia studentiv"]},
+      {"id": "pq02", "lang": "uk->en", "query": "яка в нас політика повернення коштів", "expect": "p_refund_en", "variants": ["refund policy", "polityka povernennia koshtiv"]},
+      {"id": "pq03", "lang": "en->translit", "query": "team plan price for business customers", "expect": "p_team_translit", "variants": ["тарифи для бізнесу, командний план", "taryfy dlia biznesu komandnyi plan"]},
+      {"id": "pq04", "lang": "translit->uk", "query": "taryfy dlia studentiv", "expect": "p_pricing_uk", "variants": ["тарифи для студентів", "student pricing plan"]},
+      {"id": "pq05", "lang": "uk->cyr-translit", "query": "ціни для корпоративних клієнтів", "expect": "p_enterprise_cyr", "variants": ["enterprise pricing", "ентерпрайз прайсинг"]},
+      {"id": "pq06", "lang": "en negation", "query": "when do customers not get their money back", "expect": "p_refund_en", "variants": ["коли клієнтам не повертають гроші", "no refund after downgrade"]},
+      {"id": "pq07", "lang": "cyr-translit->en", "query": "прайсинг для ентерпрайзу", "expect": "p_enterprise_cyr", "variants": ["enterprise pricing contract", "ціни для великих компаній"]},
+      {"id": "pq08", "lang": "uk->translit", "query": "скільки коштує командний план для бізнесу", "expect": "p_team_translit", "variants": ["team plan price for business", "skilky koshtuie komandnyi plan"]}
+    ],
+    "follow_ups": [
+      {"id": "pf01", "conversation": "We talked about the new subscription tiers and what students pay.", "query": "and how much off is there for paying yearly?", "expect": "p_pricing_uk", "variants": ["знижка за річну оплату", "annual billing discount"]},
+      {"id": "pf02", "conversation": "Обговорювали, коли ми повертаємо клієнтам гроші.", "query": "а якщо план понизили?", "expect": "p_refund_en", "variants": ["refund after a plan downgrade"]}
+    ]
+  }
+}

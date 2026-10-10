@@ -1,0 +1,44 @@
+# Roadmap
+
+Checked items have executed acceptance in `bash scripts/verify.sh`.
+
+- [x] Standalone plugin, discovered and registered by the real Hermes host (0.21.5, rev d806379) in an isolated `HERMES_HOME`. Covers the tools, the `hermes hermes-mem` CLI and post-turn hooks, with `session_search` untouched and `state.db` unchanged.
+- [x] Episode selection: user requests and visible answers. Tool traffic, reasoning, summaries, routine sessions and logs are excluded; short corrections are kept; long answers are chunked.
+- [x] Durable excerpt store with content hashes, model and dimension metadata, versions (`superseded`), `retracted` rewinds, and `source_missing` after deletion.
+- [x] Compacted history searchable, with clones deduplicated. This includes the semantic-after-compaction regression that PR #44093 missed.
+- [x] Idempotent, resumable, bounded backfill and reconcile, with interruption rollback, embed back-off and lazy re-embedding on a model change.
+- [x] Hybrid retrieval: FTS5 BM25 plus multilingual vectors with RRF and match provenance. Missing vectors degrade visibly to keyword mode.
+- [x] Real local multilingual embeddings (fastembed `paraphrase-multilingual-MiniLM-L12-v2`) and an OpenAI-compatible endpoint provider. The endpoint provider has a protocol test only; no real local server was run.
+- [x] Ukrainian/English paraphrase smoke eval comparing keyword, semantic and hybrid on 15 synthetic episodes.
+- [x] Conversational follow-up: a minimal `conversation` parameter that feeds the semantic query. Two eval cases are reported, not gated.
+- [x] Profile isolation and authoritative peer/chat scopes. Shared or unprovable group sessions are confined to their own session.
+- [x] Editable curated peer cards, intents, observations and decisions, with propose/revise/retract/accept, evidence checks and bounded reads.
+- [x] Processing-policy boundary: a `processing` config (`retain`, `compression`, `expiry`) whose only implemented value is `none`. Sync stores `ProcessingPolicy.apply` output, which is verbatim chunks of the originals. Unsupported values fail as a config error and as a host plugin load error, and `status` and sync reports show the policy that ran ([ADR 0003](docs/adr/0003-processing-policy.md)).
+- [x] External engine runtime: no heavy packages or pip in Hermes, idempotent failure-safe `setup`, and the runtime/store/curated records surviving host venv replacement and `--force` reinstall, with host packages and `state.db` unchanged (`scripts/install_acceptance.py`, 35 checks on an installed copy, ADR 0004).
+- [x] Operator `index` with read-only preview, bounds, progress and resume through the installed plugin, run from an unrelated directory with the real engine.
+- [x] Embedding profiles and spaces (MiniLM default, e5-small pinned to revision `614241f6…`), with per-profile coverage and switching A → B → A without re-embedding. Both models ran for real with distinct spaces, full coverage and the pinned snapshot loaded.
+- [x] Two-model comparison on the original set plus Ukrainian, English and transliterated pricing-policy questions, baseline against frozen variants (`scripts/compare_models.py`). Run with both real models on 22 synthetic questions; MiniLM stays the default (results in the README). Quality is reported, not gated.
+- [x] Semantic query variants and configurable search instructions, including real tool dispatch with variants on the installed copy.
+- [x] `sync.chunk_chars`: versioned re-chunking with vector reuse (unit-tested on Python 3.14 and the host Python).
+- [x] Canonical SQLite curated records (schema 2): one record shape, immutable content and an append-only event log, with a previewed, all-or-nothing, repeatable Markdown import and an export (ADR 0005), accepted on an installed copy with a real host.
+- [x] BGE-M3 INT8 (`Xenova/bge-m3` at `4de1325`) as the pinned default profile, MiniLM as an explicit control, and a model cache shared across profiles (ADR 0006).
+- [x] Operator flow documented and accepted on an installed copy: setup, read-only preview, bounded and resumable index, per-profile pending/failed coverage, curated import, upgrade and rollback steps.
+- [ ] Corpus-scale quality evaluation on real history (30–50 questions: hit@5/10, MRR, latency, size) against `session_search` and Hindsight.
+- [ ] Production rollout checklist:
+  - Back up, then install into the live profile and set `sessions.auto_prune`.
+  - Set up operational monitoring of the background sync.
+  - Disable Hindsight only after accepted evidence that the `mem_search` / `mem_curated` tools serve the profile.
+- [ ] Import or search old Hindsight data. This needs its own export format, review and authorization; no live export or migration has been done.
+- [ ] Compression policy: derived chunks that leave originals, refs and hashes intact, with a policy-aware source fingerprint (ADR 0003).
+- [ ] Stronger follow-up handling: query rewriting from conversation state, evaluated on real follow-ups.
+- [ ] Retain policy: model extraction or consolidation of curated observations and peer cards from episodes, as `proposed` records with episode evidence (ADR 0003). This needs an evaluation and review workflow before any automatic acceptance.
+- [ ] Optional background LLM reflection: curated extraction from episodes, default off. Not implemented.
+  - The operator selects a standard Hermes model provider and model. Credentials come from Hermes' own credential and auth resolution; the plugin keeps no second secret store.
+  - Separate from embeddings and background sync: its own config, jobs and failure state. Reflection failure never degrades search or blocks sync, and nothing runs on the response path.
+  - Bounded, idempotent, resumable jobs with explicit budgets (episodes, tokens and calls per run), and a visible stop when a budget is exhausted.
+  - Results are `proposed` curated records with episode source evidence. Only the operator accepts them, and the existing scope, identity and `declared`-evidence rules apply unchanged.
+  - Before rollout: a real host integration and an evaluation of extraction quality on real history, each with executed acceptance evidence.
+- [ ] Optional auto-recall (`pre_llm_call`) with a strict token budget, after explicit recall has proven itself.
+- [ ] `message_uid` re-keying once the host ships it. Copy dedupe also needs a host-level test for rotated handoff copies.
+- [ ] Per-message speaker identity in shared group chats, if the host ever records it authoritatively.
+- [ ] ANN index or `sqlite-vec` when exact scans become slow. Compare reranking only with a measured recall@40 → recall@10 gap.

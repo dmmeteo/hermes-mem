@@ -1,0 +1,7 @@
+[project]
+name = "hermes-mem"
+version = "0.2.0"
+description = "Hermes plugin: durable episode recall with hybrid multilingual search and curated statements"
+requires-python = ">=3.11"
+dependencies = ["pyyaml"]
+
